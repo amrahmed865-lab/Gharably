@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام المتابعة اليومي</title>
+    <title>التقرير اليومي للمدرب الميداني</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -16,28 +16,19 @@
     <div id="auth-screen" class="flex-grow flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
             <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500/10 text-indigo-400 mb-4 border border-indigo-500/20">
-                    <i class="fa-solid fa-shield-halved text-2xl"></i>
-                </div>
-                <h1 class="text-2xl font-bold text-white">تسجيل الدخول</h1>
-                <p class="text-slate-400 text-sm mt-2">أدخل بياناتك للوصول إلى النظام اليومي</p>
+                <h1 class="text-2xl font-bold text-white mb-2">تسجيل الدخول</h1>
+                <p class="text-slate-400 text-sm">نظام تقارير المدربين الميدانيين</p>
             </div>
-            
             <form id="auth-form" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-2">البريد الإلكتروني</label>
-                    <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-500 transition-all outline-none" placeholder="name@company.com">
+                    <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-2">كلمة المرور</label>
-                    <input type="password" id="auth-password" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-500 transition-all outline-none" placeholder="••••••••">
+                    <input type="password" id="auth-password" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
                 </div>
-                <button type="submit" id="btn-login" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-right-to-bracket"></i> دخول
-                </button>
-                <button type="button" id="btn-signup" class="w-full bg-transparent hover:bg-slate-800 text-slate-400 border border-slate-800 font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                    إنشاء حساب جديد
-                </button>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">دخول</button>
             </form>
         </div>
     </div>
@@ -45,99 +36,94 @@
     <div id="app-screen" class="hidden flex-grow flex flex-col">
         <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 px-4 py-4 shadow-md">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <span class="text-indigo-400 text-xl font-bold flex items-center gap-2">
-                        <i class="fa-solid fa-square-poll-vertical"></i> نظام المتابعة
-                    </span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span id="user-display" class="text-sm text-slate-400 hidden sm:inline"></span>
-                    <button id="btn-logout" class="bg-slate-800 hover:bg-red-950/40 text-slate-300 hover:text-red-400 border border-slate-700 hover:border-red-900/50 px-3 py-1.5 rounded-lg text-sm transition-all flex items-center gap-1.5">
-                        <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i> خروج
-                    </button>
-                </div>
+                <span class="text-indigo-400 text-lg font-bold">التقرير الميداني اليومي</span>
+                <button id="btn-logout" class="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg text-sm border border-slate-700">خروج</button>
             </div>
         </header>
 
         <div class="bg-slate-900/50 border-b border-slate-800/60 p-2">
             <div class="max-w-6xl mx-auto flex gap-2">
-                <button id="tab-form" class="flex-1 sm:flex-none px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-pen-to-square"></i> إدخال البيانات اليومية
-                </button>
-                <button id="tab-dashboard" class="flex-1 sm:flex-none px-4 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-chart-line"></i> لوحة المتابعة (المدير)
-                </button>
+                <button id="tab-form" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">إدخال التقرير</button>
+                <button id="tab-dashboard" class="flex-1 px-4 py-2 bg-slate-800 text-slate-300 rounded-lg text-sm font-medium">الأرشيف والمتابعة</button>
             </div>
         </div>
 
         <main class="max-w-6xl w-full mx-auto p-4 flex-grow">
-            
-            <section id="form-view" class="space-y-6 max-w-xl mx-auto py-4">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-                    <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-file-invoice text-indigo-400"></i> تقرير اليوم المعتاد
-                    </h2>
+            <section id="form-view" class="max-w-2xl mx-auto py-4">
+                <form id="daily-data-form" class="space-y-6">
                     
-                    <form id="daily-data-form" class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">اسم الموظف / المسؤول</label>
-                            <input type="text" id="log-name" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white outline-none">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">البيانات الأساسية</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div><label class="block text-xs text-slate-400 mb-1">اسم المدرب</label><input type="text" id="f-name" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">الكود الوظيفي</label><input type="text" id="f-code" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">التاريخ</label><input type="date" id="f-date" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">المنطقة</label><input type="text" id="f-region" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div class="sm:col-span-2"><label class="block text-xs text-slate-400 mb-1">المشرف المباشر</label><input type="text" id="f-supervisor" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
                         </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">حالة العمل الحالية</label>
-                            <select id="log-status" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white outline-none">
-                                <option value="مكتمل">🟢 مكتمل بالكامل</option>
-                                <option value="جاري العمل">🟡 جاري العمل حالياً</option>
-                                <option value="متأخر / معلق">🔴 متأخر / يوجد معوقات</option>
-                            </select>
-                        </div>
+                    </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">تفاصيل المهام والإدخال اليومي</label>
-                            <textarea id="log-details" rows="4" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white outline-none placeholder-slate-600" placeholder="اكتب بالتفصيل ما تم إنجازه أو الأجزاء المتأخرة..."></textarea>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">أوقات العمل</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div><label class="block text-xs text-slate-400 mb-1">الحضور</label><input type="time" id="f-time-in" class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">الانصراف</label><input type="time" id="f-time-out" class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">إجمالي الساعات</label><input type="number" id="f-hours" class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none" placeholder="مثال: 8"></div>
                         </div>
+                    </div>
 
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> إرسال البيانات وحفظها
-                        </button>
-                    </form>
-                </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الأنشطة المنفذة (يمكن اختيار أكثر من نشاط)</h3>
+                        <div class="grid grid-cols-2 gap-3 text-sm" id="activities-group">
+                            <label class="flex items-center gap-2"><input type="checkbox" value="محاضرة نظرية" class="rounded bg-slate-950 border-slate-700"> محاضرة نظرية</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="تدريب عملي" class="rounded bg-slate-950 border-slate-700"> تدريب عملي</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="تدريب على رأس العمل" class="rounded bg-slate-950 border-slate-700"> تدريب على رأس العمل</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="استصحاب قطارات" class="rounded bg-slate-950 border-slate-700"> استصحاب قطارات</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="تفتيش ميداني" class="rounded bg-slate-950 border-slate-700"> تفتيش ميداني</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="زيارة ورش/أحواش" class="rounded bg-slate-950 border-slate-700"> زيارة ورش / أحواش</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="جلسة أونلاين" class="rounded bg-slate-950 border-slate-700"> جلسة أونلاين</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" value="حضور تحقيق" class="rounded bg-slate-950 border-slate-700"> حضور تحقيق</label>
+                            <label class="flex items-center gap-2 col-span-2"><input type="checkbox" value="أخري" class="rounded bg-slate-950 border-slate-700"> أخري</label>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">تفاصيل العمل والمستهدفين</h3>
+                        <div><label class="block text-xs text-slate-400 mb-1">أماكن العمل أو الزيارات</label><input type="text" id="f-locations" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الموضوعات التدريبية</label><input type="text" id="f-topics" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الفئات المستهدفة</label><input type="text" id="f-targets" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">عدد المتدربين وأسمائهم</label><textarea id="f-trainees" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الملاحظات والنتائج</h3>
+                        <div><label class="block text-xs text-slate-400 mb-1">التعليمات أو المنشورات التي تم توصيلها</label><textarea id="f-instructions" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الملاحظات والمعوقات</label><textarea id="f-notes" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الإجراءات المتخذة</label><textarea id="f-actions" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">التوصيات</label><textarea id="f-recommendations" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">ملخص إنجازات اليوم</label><textarea id="f-summary" rows="3" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-lg">إرسال التقرير النهائي</button>
+                </form>
             </section>
 
             <section id="dashboard-view" class="hidden space-y-6 py-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">استعراض وتتبع كافة البيانات</h2>
-                        <p class="text-xs text-slate-400 mt-1">تحديث لحظي ومباشر لكافة المدخلات</p>
+                <input type="text" id="search-filter" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 text-white outline-none" placeholder="ابحث باسم المدرب أو المنطقة أو التاريخ...">
+                
+                <div id="logs-container" class="space-y-4">
                     </div>
-                    <div class="w-full sm:w-64 relative">
-                        <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-slate-500 text-sm"></i>
-                        <input type="text" id="search-filter" class="w-full pl-4 pr-9 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 text-white outline-none placeholder-slate-500" placeholder="ابحث باسم الشخص أو الحالة...">
-                    </div>
-                </div>
-
-                <div id="logs-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="text-center py-12 text-slate-500 col-span-full">
-                        <i class="fa-solid fa-spinner animate-spin text-2xl mb-2"></i>
-                        <p>جاري تحميل البيانات الحالية...</p>
-                    </div>
-                </div>
             </section>
 
         </main>
     </div>
 
-    <footer class="bg-slate-950 border-t border-slate-900 py-4 text-center text-xs text-slate-600">
-        نظام المتابعة الفوري عبر السحابة الذكية © 2026
-    </footer>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ⚠️ ضَع إعدادات مشروع Firebase الخاص بك هنا بالأسفل:
+        // ⚠️ ضع مفاتيح Firebase الخاصة بك هنا بدلاً من الكلمات الإنجليزية
         const firebaseConfig = {
             apiKey: "AIzaSyDqOMOxCyTBRouVjAN-70FNaJjTElqeJdE",
     authDomain: "gharably-aad60.firebaseapp.com",
@@ -148,159 +134,139 @@
 
         };
 
-        // تهيئة التطبيق
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // عناصر الواجهة
-        const authScreen = document.getElementById('auth-screen');
-        const appScreen = document.getElementById('app-screen');
-        const authForm = document.getElementById('auth-form');
-        const dailyForm = document.getElementById('daily-data-form');
-        const logsContainer = document.getElementById('logs-container');
-        const searchFilter = document.getElementById('search-filter');
+        let allLogs = [];
 
-        let allLogs = []; // لتخزين البيانات محلياً لتسهيل البحث والفلترة
-
-        // إدارة التبديل بين الشاشات والتبويبات
-        function showView(viewName) {
-            if(viewName === 'form') {
-                document.getElementById('form-view').classList.remove('hidden');
-                document.getElementById('dashboard-view').classList.add('hidden');
-                document.getElementById('tab-form').className = "flex-1 sm:flex-none px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2";
-                document.getElementById('tab-dashboard').className = "flex-1 sm:flex-none px-4 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2";
-            } else {
-                document.getElementById('form-view').classList.add('hidden');
-                document.getElementById('dashboard-view').classList.remove('hidden');
-                document.getElementById('tab-form').className = "flex-1 sm:flex-none px-4 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2";
-                document.getElementById('tab-dashboard').className = "flex-1 sm:flex-none px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2";
-                loadLogsData();
-            }
+        // التنقل بين الشاشات
+        function showView(view) {
+            document.getElementById('form-view').classList.toggle('hidden', view !== 'form');
+            document.getElementById('dashboard-view').classList.toggle('hidden', view !== 'dashboard');
+            document.getElementById('tab-form').className = view === 'form' ? "flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium" : "flex-1 px-4 py-2 bg-slate-800 text-slate-300 rounded-lg text-sm font-medium";
+            document.getElementById('tab-dashboard').className = view === 'dashboard' ? "flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium" : "flex-1 px-4 py-2 bg-slate-800 text-slate-300 rounded-lg text-sm font-medium";
+            if(view === 'dashboard') loadLogsData();
         }
 
         document.getElementById('tab-form').addEventListener('click', () => showView('form'));
         document.getElementById('tab-dashboard').addEventListener('click', () => showView('dashboard'));
 
-        // مراقبة حالة تسجيل دخول المستخدم
+        // المصادقة
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                authScreen.classList.add('hidden');
-                appScreen.classList.remove('hidden');
-                document.getElementById('user-display').innerText = user.email;
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
                 showView('form');
             } else {
-                authScreen.classList.remove('hidden');
-                appScreen.classList.add('hidden');
+                document.getElementById('auth-screen').classList.remove('hidden');
+                document.getElementById('app-screen').classList.add('hidden');
             }
         });
 
-        // عمليات تسجيل الدخول وإنشاء الحساب
-        authForm.addEventListener('submit', async (e) => {
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
             try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                alert("خطأ في تسجيل الدخول: " + error.message);
-            }
-        });
-
-        document.getElementById('btn-signup').addEventListener('click', async () => {
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
-            if(!email || !password) { alert("يرجى كتابة البريد وكلمة المرور أولاً"); return; }
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                alert("تم إنشاء الحساب بنجاح ودخولك للنظام!");
-            } catch (error) {
-                alert("خطأ في إنشاء الحساب: " + error.message);
-            }
+                await signInWithEmailAndPassword(auth, document.getElementById('auth-email').value, document.getElementById('auth-password').value);
+            } catch (error) { alert("خطأ في الدخول: " + error.message); }
         });
 
         document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
-        // إرسال البيانات اليومية وحفظها في Firestore
-        dailyForm.addEventListener('submit', async (e) => {
+        // إرسال البيانات
+        document.getElementById('daily-data-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('log-name').value;
-            const status = document.getElementById('log-status').value;
-            const details = document.getElementById('log-details').value;
+            
+            // تجميع الأنشطة المختارة
+            const checkboxes = document.querySelectorAll('#activities-group input[type="checkbox"]:checked');
+            let selectedActivities = Array.from(checkboxes).map(cb => cb.value);
+
+            const reportData = {
+                trainerName: document.getElementById('f-name').value,
+                jobCode: document.getElementById('f-code').value,
+                reportDate: document.getElementById('f-date').value,
+                region: document.getElementById('f-region').value,
+                supervisor: document.getElementById('f-supervisor').value,
+                timeIn: document.getElementById('f-time-in').value,
+                timeOut: document.getElementById('f-time-out').value,
+                totalHours: document.getElementById('f-hours').value,
+                activities: selectedActivities,
+                locations: document.getElementById('f-locations').value,
+                topics: document.getElementById('f-topics').value,
+                targets: document.getElementById('f-targets').value,
+                trainees: document.getElementById('f-trainees').value,
+                instructions: document.getElementById('f-instructions').value,
+                notes: document.getElementById('f-notes').value,
+                actions: document.getElementById('f-actions').value,
+                recommendations: document.getElementById('f-recommendations').value,
+                summary: document.getElementById('f-summary').value,
+                submitterEmail: auth.currentUser.email,
+                timestamp: new Date().toISOString()
+            };
             
             try {
-                await addDoc(collection(db, "daily_logs"), {
-                    name: name,
-                    status: status,
-                    details: details,
-                    userEmail: auth.currentUser.email,
-                    timestamp: new Date().toISOString()
-                });
-                alert("تم إرسال تقريرك اليومي بنجاح مذهل!");
-                dailyForm.reset();
+                const btn = e.target.querySelector('button[type="submit"]');
+                btn.innerText = "جاري الإرسال..."; btn.disabled = true;
+                await addDoc(collection(db, "daily_reports"), reportData);
+                alert("تم رفع التقرير بنجاح!");
+                e.target.reset();
+                btn.innerText = "إرسال التقرير النهائي"; btn.disabled = false;
             } catch (error) {
-                alert("حدث خطأ أثناء الحفظ: " + error.message);
+                alert("خطأ: " + error.message);
             }
         });
 
-        // سحب البيانات وعرضها في لوحة المدير
+        // جلب البيانات للأرشيف
         async function loadLogsData() {
-            logsContainer.innerHTML = `<div class="text-center py-12 text-slate-500 col-span-full"><i class="fa-solid fa-spinner animate-spin text-2xl mb-2"></i><p>جاري تحديث البيانات السحابية...</p></div>`;
+            const container = document.getElementById('logs-container');
+            container.innerHTML = `<p class="text-center text-slate-500 py-10">جاري التحميل...</p>`;
             try {
-                const q = query(collection(db, "daily_logs"), orderBy("timestamp", "desc"));
+                const q = query(collection(db, "daily_reports"), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
                 allLogs = [];
-                querySnapshot.forEach((doc) => {
-                    allLogs.push(doc.data());
-                });
+                querySnapshot.forEach((doc) => allLogs.push(doc.data()));
                 renderLogs(allLogs);
             } catch (error) {
-                logsContainer.innerHTML = `<div class="text-center py-12 text-red-400 col-span-full"><p>فشل تحميل البيانات: ${error.message}</p></div>`;
+                container.innerHTML = `<p class="text-center text-red-500">فشل التحميل: ${error.message}</p>`;
             }
         }
 
-        // بناء بطاقات البيانات داخل الواجهة
-        function renderLogs(logsArray) {
-            if(logsArray.length === 0) {
-                logsContainer.innerHTML = `<div class="text-center py-12 text-slate-500 col-span-full"><p>لا توجد أي بيانات مدخلة حتى الآن.</p></div>`;
-                return;
-            }
+        function renderLogs(logs) {
+            const container = document.getElementById('logs-container');
+            if(logs.length === 0) { container.innerHTML = `<p class="text-center text-slate-500 py-10">لا يوجد تقارير بعد.</p>`; return; }
             
-            logsContainer.innerHTML = "";
-            logsArray.forEach(log => {
-                const dateObj = new Date(log.timestamp);
-                const formattedDate = dateObj.toLocaleDateString('ar-EG', {day: 'numeric', month: 'short', hour: '2-digit', minute:'2-digit'});
-                
-                let statusColor = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-                if(log.status.includes("جاري")) statusColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
-                if(log.status.includes("متأخر")) statusColor = "bg-red-500/10 text-red-400 border-red-500/20";
-
+            container.innerHTML = "";
+            logs.forEach(log => {
+                const acts = log.activities && log.activities.length > 0 ? log.activities.join('، ') : 'لم يتم تحديد أنشطة';
                 const card = document.createElement('div');
-                card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 shadow-md hover:border-slate-700 transition-all";
+                card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3";
                 card.innerHTML = `
-                    <div class="flex justify-between items-start gap-2">
+                    <div class="flex justify-between items-start border-b border-slate-800 pb-3">
                         <div>
-                            <h3 class="font-bold text-white text-base">${log.name}</h3>
-                            <p class="text-xs text-slate-500 mt-0.5"><i class="fa-regular fa-envelope"></i> ${log.userEmail}</p>
+                            <h3 class="font-bold text-white text-lg">${log.trainerName}</h3>
+                            <p class="text-xs text-slate-400 mt-1">المنطقة: ${log.region} | الكود: ${log.jobCode}</p>
                         </div>
-                        <span class="text-xs px-2.5 py-1 rounded-full border ${statusColor} font-medium">${log.status}</span>
+                        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">${log.reportDate}</span>
                     </div>
-                    <p class="text-sm text-slate-300 bg-slate-950/40 p-3 rounded-lg border border-slate-850/50 whitespace-pre-line leading-relaxed">${log.details}</p>
-                    <div class="text-left">
-                        <span class="text-[10px] text-slate-500 font-mono"><i class="fa-regular fa-clock"></i> ${formattedDate}</span>
+                    <div class="text-sm text-slate-300 space-y-2 pt-2">
+                        <p><strong class="text-indigo-400">الأنشطة:</strong> ${acts}</p>
+                        <p><strong class="text-indigo-400">الموضوعات:</strong> ${log.topics || '-'}</p>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 mt-3">
+                            <strong class="text-xs text-slate-500 block mb-1">ملخص الإنجاز:</strong>
+                            <p class="whitespace-pre-line leading-relaxed">${log.summary}</p>
+                        </div>
                     </div>
                 `;
-                logsContainer.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        // تفعيل الفلترة والبحث اللحظي عند الكتابة من الموبايل
-        searchFilter.addEventListener('input', (e) => {
+        document.getElementById('search-filter').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allLogs.filter(log => 
-                log.name.toLowerCase().includes(term) || 
-                log.status.toLowerCase().includes(term) ||
-                log.details.toLowerCase().includes(term)
+                (log.trainerName && log.trainerName.toLowerCase().includes(term)) || 
+                (log.region && log.region.toLowerCase().includes(term)) ||
+                (log.reportDate && log.reportDate.includes(term))
             );
             renderLogs(filtered);
         });
