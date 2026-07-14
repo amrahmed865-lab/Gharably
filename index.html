@@ -9,30 +9,24 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap');
         body { font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; }
+        /* تصميم شريط التمرير للنافذة المنبثقة */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
 
-    <div id="auth-screen" class="hidden flex-grow flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
-            <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-white mb-2">تسجيل الدخول</h1>
-                <p class="text-slate-400 text-sm">نظام تقارير المدربين الميدانيين</p>
+    <div id="report-modal" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-slate-900 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-slate-700 shadow-2xl">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900 rounded-t-2xl sticky top-0">
+                <h3 class="text-white font-bold text-lg"><i class="fa-solid fa-file-lines text-indigo-400 ml-2"></i>تفاصيل التقرير الميداني</h3>
+                <button id="close-modal" class="text-slate-400 hover:text-red-400 transition-colors w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-800">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
             </div>
-            <form id="auth-form" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">البريد الإلكتروني</label>
-                    <input type="email" id="auth-email" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
+            <div id="modal-content" class="p-5 overflow-y-auto space-y-3 text-sm pb-10">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">كلمة المرور</label>
-                    <input type="password" id="auth-password" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
-                </div>
-                <div class="space-y-3 pt-2">
-                    <button type="submit" id="btn-login" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition-all shadow-lg">دخول</button>
-                    <button type="button" id="btn-signup" class="w-full bg-transparent border border-slate-700 hover:bg-slate-800 text-slate-300 font-medium py-3 rounded-xl transition-all">إنشاء حساب جديد</button>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -55,130 +49,93 @@
             <section id="form-view" class="max-w-2xl mx-auto py-4">
                 <form id="daily-data-form" class="space-y-6">
                     
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-lg">
                         <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">البيانات الأساسية</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div><label class="block text-xs text-slate-400 mb-1">اسم المدرب</label><input type="text" id="f-name" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">الكود الوظيفي</label><input type="text" id="f-code" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">التاريخ</label><input type="date" id="f-date" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">المنطقة</label><input type="text" id="f-region" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                            <div class="sm:col-span-2"><label class="block text-xs text-slate-400 mb-1">المشرف المباشر</label><input type="text" id="f-supervisor" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">اسم المدرب *</label><input type="text" id="f-name" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">الكود الوظيفي *</label><input type="text" id="f-code" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">التاريخ *</label><input type="date" id="f-date" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">المنطقة</label><input type="text" id="f-region" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
+                            <div class="sm:col-span-2"><label class="block text-xs text-slate-400 mb-1">المشرف المباشر</label><input type="text" id="f-supervisor" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-lg">
                         <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">أوقات العمل</h3>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div><label class="block text-xs text-slate-400 mb-1">الحضور</label><input type="time" id="f-time-in" class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">الانصراف</label><input type="time" id="f-time-out" class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">إجمالي الساعات</label><input type="number" id="f-hours" class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none" placeholder="مثال: 8"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div><label class="block text-xs text-slate-400 mb-1">الحضور *</label><input type="time" id="f-time-in" required class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">الانصراف *</label><input type="time" id="f-time-out" required class="w-full px-2 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">إجمالي الساعات (تلقائي)</label><input type="text" id="f-hours" readonly class="w-full px-2 py-2 bg-slate-950/50 border border-slate-800 rounded-lg text-sm text-indigo-300 outline-none cursor-not-allowed text-center font-bold placeholder-slate-700" placeholder="سيتم الحساب..."></div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الأنشطة المنفذة (اختر واكتب التفاصيل)</h3>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-lg">
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الأنشطة المنفذة</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm" id="activities-group">
-                            
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="محاضرة نظرية" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">محاضرة نظرية</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل المحاضرة هنا...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="محاضرة نظرية" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">محاضرة نظرية</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="اكتب التفاصيل (اضغط Enter لسطر جديد)..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="تدريب عملي" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">تدريب عملي</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل التدريب هنا...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="تدريب عملي" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">تدريب عملي</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="اكتب التفاصيل..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="تدريب على رأس العمل" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">تدريب على رأس العمل</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب التفاصيل هنا...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="تدريب على رأس العمل" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">تدريب على رأس العمل</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="اكتب التفاصيل..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="استصحاب قطارات" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">استصحاب قطارات</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="رقم القطار / الرحلة...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="استصحاب قطارات" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">استصحاب قطارات</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="رقم القطار / الرحلة..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="تفتيش ميداني" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">تفتيش ميداني</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="مكان وتفاصيل التفتيش...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="تفتيش ميداني" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">تفتيش ميداني</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="مكان وتفاصيل التفتيش..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="زيارة ورش/أحواش" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">زيارة ورش / أحواش</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اسم الورشة / الحوش...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="زيارة ورش/أحواش" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">زيارة ورش / أحواش</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="اسم الورشة / الحوش..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="جلسة أونلاين" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">جلسة أونلاين</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="موضوع الجلسة والمنصة...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="جلسة أونلاين" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">جلسة أونلاين</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="موضوع الجلسة والمنصة..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="حضور تحقيق" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">حضور تحقيق</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="تفاصيل التحقيق...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="حضور تحقيق" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">حضور تحقيق</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="تفاصيل التحقيق..."></textarea>
                             </div>
-
                             <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all sm:col-span-2">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" value="أخري" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
-                                    <span class="font-medium text-slate-300">أخري</span>
-                                </label>
-                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل الأنشطة الأخرى هنا...">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" value="أخري" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> <span class="font-medium text-slate-300">أخري</span></label>
+                                <textarea rows="2" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل الأنشطة الأخرى..."></textarea>
                             </div>
-
                         </div>
                     </div>
 
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-lg">
                         <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">تفاصيل العمل والمستهدفين</h3>
-                        <div><label class="block text-xs text-slate-400 mb-1">أماكن العمل أو الزيارات</label><input type="text" id="f-locations" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">الموضوعات التدريبية</label><input type="text" id="f-topics" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">الفئات المستهدفة</label><input type="text" id="f-targets" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">عدد المتدربين وأسمائهم</label><textarea id="f-trainees" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">أماكن العمل أو الزيارات</label><textarea id="f-locations" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الموضوعات التدريبية</label><textarea id="f-topics" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الفئات المستهدفة</label><textarea id="f-targets" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">عدد المتدربين وأسمائهم</label><textarea id="f-trainees" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
                     </div>
 
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-lg">
                         <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الملاحظات والنتائج</h3>
-                        <div><label class="block text-xs text-slate-400 mb-1">التعليمات أو المنشورات التي تم توصيلها</label><textarea id="f-instructions" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">الملاحظات والمعوقات</label><textarea id="f-notes" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">الإجراءات المتخذة</label><textarea id="f-actions" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">التوصيات</label><textarea id="f-recommendations" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">ملخص إنجازات اليوم</label><textarea id="f-summary" rows="3" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">التعليمات أو المنشورات التي تم توصيلها</label><textarea id="f-instructions" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الملاحظات والمعوقات</label><textarea id="f-notes" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">الإجراءات المتخذة</label><textarea id="f-actions" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">التوصيات</label><textarea id="f-recommendations" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">ملخص إنجازات اليوم</label><textarea id="f-summary" rows="3" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white outline-none focus:border-indigo-500"></textarea></div>
                     </div>
 
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-lg">إرسال التقرير النهائي</button>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-600/20 transition-all text-lg">إرسال التقرير النهائي</button>
                 </form>
             </section>
 
-            <section id="dashboard-view" class="hidden space-y-6 py-4">
-                <input type="text" id="search-filter" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 text-white outline-none" placeholder="ابحث باسم المدرب أو المنطقة أو التاريخ...">
+            <section id="dashboard-view" class="hidden space-y-4 py-4">
+                <input type="text" id="search-filter" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 text-white outline-none shadow-lg" placeholder="ابحث باسم المدرب أو المنطقة أو التاريخ...">
                 
-                <div id="logs-container" class="space-y-4">
+                <div id="logs-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     </div>
             </section>
 
@@ -206,6 +163,31 @@
 
         let allLogs = [];
 
+        // حساب الوقت التلقائي
+        function calculateHours() {
+            const timeIn = document.getElementById('f-time-in').value;
+            const timeOut = document.getElementById('f-time-out').value;
+            const hoursInput = document.getElementById('f-hours');
+
+            if (timeIn && timeOut) {
+                const [inH, inM] = timeIn.split(':').map(Number);
+                const [outH, outM] = timeOut.split(':').map(Number);
+
+                let diffM = outM - inM;
+                let diffH = outH - inH;
+
+                if (diffM < 0) { diffM += 60; diffH -= 1; }
+                if (diffH < 0) { diffH += 24; } // معالجة الورديات التي تتخطى منتصف الليل
+
+                hoursInput.value = `${diffH} ساعات و ${diffM} دقيقة`;
+            } else {
+                hoursInput.value = '';
+            }
+        }
+
+        document.getElementById('f-time-in').addEventListener('input', calculateHours);
+        document.getElementById('f-time-out').addEventListener('input', calculateHours);
+
         // إظهار وإخفاء مربع النص عند اختيار النشاط
         document.querySelectorAll('.activity-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
@@ -216,7 +198,7 @@
                     inputField.focus();
                 } else {
                     inputField.classList.add('hidden');
-                    inputField.value = ''; // تفريغ الحقل إذا تم إزالة علامة الصح
+                    inputField.value = '';
                 }
             });
         });
@@ -232,71 +214,21 @@
 
         document.getElementById('tab-form').addEventListener('click', () => showView('form'));
         document.getElementById('tab-dashboard').addEventListener('click', () => showView('dashboard'));
-
-        // ==========================================
-        // ⚠️ تم إيقاف نظام الدخول مؤقتاً (Hold)
-        // ==========================================
-        /*
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('app-screen').classList.remove('hidden');
-                showView('form');
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('app-screen').classList.add('hidden');
-            }
-        });
-        */
         
-        // تشغيل واجهة الإدخال مباشرة متخطياً تسجيل الدخول
+        // تشغيل واجهة الإدخال مباشرة 
         showView('form');
-
-        // الدخول (مجمد)
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                const btn = document.getElementById('btn-login');
-                btn.innerText = "جاري الدخول...";
-                await signInWithEmailAndPassword(auth, document.getElementById('auth-email').value, document.getElementById('auth-password').value);
-                btn.innerText = "دخول";
-            } catch (error) { 
-                alert("خطأ في الدخول: " + error.message);
-                document.getElementById('btn-login').innerText = "دخول";
-            }
-        });
-
-        // إنشاء حساب (مجمد)
-        document.getElementById('btn-signup').addEventListener('click', async () => {
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
-            if(!email || !password) { alert("يرجى كتابة البريد وكلمة المرور أولاً"); return; }
-            try {
-                const btn = document.getElementById('btn-signup');
-                btn.innerText = "جاري الإنشاء...";
-                await createUserWithEmailAndPassword(auth, email, password);
-                alert("تم إنشاء الحساب وتسجيل الدخول بنجاح!");
-                btn.innerText = "إنشاء حساب جديد";
-            } catch (error) {
-                alert("خطأ في إنشاء الحساب: " + error.message);
-                document.getElementById('btn-signup').innerText = "إنشاء حساب جديد";
-            }
-        });
-
-        document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
         // إرسال البيانات
         document.getElementById('daily-data-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // تجميع الأنشطة المختارة مع تفاصيلها النصية
             const selectedActivities = [];
             document.querySelectorAll('.activity-checkbox:checked').forEach(cb => {
                 const parentDiv = cb.closest('div');
                 const textInput = parentDiv.querySelector('.activity-input');
                 let activityText = cb.value;
                 if (textInput && textInput.value.trim() !== '') {
-                    activityText += ` (${textInput.value.trim()})`; // دمج النشاط مع التفاصيل
+                    activityText += `\n(${textInput.value.trim()})`; 
                 }
                 selectedActivities.push(activityText);
             });
@@ -320,8 +252,7 @@
                 actions: document.getElementById('f-actions').value,
                 recommendations: document.getElementById('f-recommendations').value,
                 summary: document.getElementById('f-summary').value,
-                // تعديل لتفادي مشكلة عدم وجود مستخدم مسجل
-                submitterEmail: auth.currentUser ? auth.currentUser.email : "مستخدم مؤقت (بدون تسجيل)",
+                submitterEmail: auth.currentUser ? auth.currentUser.email : "مستخدم مؤقت",
                 timestamp: new Date().toISOString()
             };
             
@@ -331,7 +262,7 @@
                 await addDoc(collection(db, "daily_reports"), reportData);
                 alert("تم رفع التقرير بنجاح!");
                 e.target.reset();
-                // إعادة إخفاء كل مربعات نص الأنشطة بعد التفريغ
+                document.getElementById('f-hours').value = '';
                 document.querySelectorAll('.activity-input').forEach(input => input.classList.add('hidden'));
                 btn.innerText = "إرسال التقرير النهائي"; btn.disabled = false;
             } catch (error) {
@@ -344,7 +275,7 @@
         // جلب البيانات للأرشيف
         async function loadLogsData() {
             const container = document.getElementById('logs-container');
-            container.innerHTML = `<p class="text-center text-slate-500 py-10">جاري التحميل...</p>`;
+            container.innerHTML = `<p class="text-center text-slate-500 py-10 col-span-full">جاري التحميل...</p>`;
             try {
                 const q = query(collection(db, "daily_reports"), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
@@ -352,37 +283,31 @@
                 querySnapshot.forEach((doc) => allLogs.push(doc.data()));
                 renderLogs(allLogs);
             } catch (error) {
-                container.innerHTML = `<p class="text-center text-red-500">فشل التحميل: ${error.message}</p>`;
+                container.innerHTML = `<p class="text-center text-red-500 col-span-full">فشل التحميل: ${error.message}</p>`;
             }
         }
 
+        // بناء كروت الأرشيف المصغرة
         function renderLogs(logs) {
             const container = document.getElementById('logs-container');
-            if(logs.length === 0) { container.innerHTML = `<p class="text-center text-slate-500 py-10">لا توجد تقارير حتى الآن.</p>`; return; }
+            if(logs.length === 0) { container.innerHTML = `<p class="text-center text-slate-500 py-10 col-span-full">لا توجد تقارير حتى الآن.</p>`; return; }
             
             container.innerHTML = "";
-            logs.forEach(log => {
-                // عرض الأنشطة المختارة بطريقة منظمة
-                const acts = log.activities && log.activities.length > 0 
-                    ? log.activities.map(a => `<span class="block bg-slate-800 text-slate-300 px-2 py-1 rounded mt-1 text-xs border border-slate-700">${a}</span>`).join('') 
-                    : '<span class="text-slate-500 text-xs">لم يتم تحديد أنشطة</span>';
-                
+            logs.forEach((log, index) => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3";
+                card.className = "bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-xl p-4 cursor-pointer transition-all shadow-lg hover:shadow-indigo-500/10 group";
+                
+                // حفظ البيانات في الكارت لاستخدامها عند الضغط
+                card.onclick = () => openModal(log);
+
                 card.innerHTML = `
-                    <div class="flex justify-between items-start border-b border-slate-800 pb-3">
-                        <div>
-                            <h3 class="font-bold text-white text-lg">${log.trainerName}</h3>
-                            <p class="text-xs text-slate-400 mt-1">المنطقة: ${log.region} | الكود: ${log.jobCode}</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-lg group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+                            <i class="fa-regular fa-user"></i>
                         </div>
-                        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">${log.reportDate}</span>
-                    </div>
-                    <div class="text-sm text-slate-300 space-y-2 pt-2">
-                        <div><strong class="text-indigo-400 block mb-1">الأنشطة المنفذة:</strong> ${acts}</div>
-                        <p class="pt-2"><strong class="text-indigo-400">الموضوعات:</strong> ${log.topics || '-'}</p>
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 mt-3">
-                            <strong class="text-xs text-slate-500 block mb-1">ملخص الإنجاز:</strong>
-                            <p class="whitespace-pre-line leading-relaxed">${log.summary}</p>
+                        <div>
+                            <h3 class="font-bold text-white text-sm truncate max-w-[200px]">${log.trainerName}</h3>
+                            <p class="text-xs text-slate-400 mt-0.5"><i class="fa-regular fa-calendar ml-1"></i>${log.reportDate || '-'}</p>
                         </div>
                     </div>
                 `;
@@ -390,6 +315,72 @@
             });
         }
 
+        // بناء النافذة المنبثقة للتقرير (تعرض الخانات الممتلئة فقط)
+        function openModal(log) {
+            const modal = document.getElementById('report-modal');
+            const content = document.getElementById('modal-content');
+            
+            let html = `
+                <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
+                    <div>
+                        <h2 class="font-bold text-white text-xl">${log.trainerName}</h2>
+                        <p class="text-xs text-slate-400 mt-1">الكود الوظيفي: ${log.jobCode}</p>
+                    </div>
+                    <span class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1.5 rounded-full border border-indigo-500/30">${log.reportDate}</span>
+                </div>
+            `;
+
+            // دالة مساعدة لإنشاء قسم فقط إذا كان يحتوي على نص
+            const addSection = (title, value) => {
+                if (value && value.trim() !== '') {
+                    html += `
+                        <div class="bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                            <strong class="text-indigo-400 block mb-1 text-xs">${title}</strong>
+                            <p class="text-slate-300 whitespace-pre-line leading-relaxed">${value}</p>
+                        </div>
+                    `;
+                }
+            };
+
+            addSection("المنطقة", log.region);
+            addSection("المشرف المباشر", log.supervisor);
+            
+            if(log.timeIn && log.timeOut) {
+                addSection("أوقات العمل", `من ${log.timeIn} إلى ${log.timeOut} \n(الإجمالي: ${log.totalHours || 'غير محسوب'})`);
+            }
+
+            if(log.activities && log.activities.length > 0) {
+                const acts = log.activities.map(a => `<div class="bg-slate-800 text-slate-200 px-3 py-2 rounded-md border border-slate-700 whitespace-pre-line leading-snug">${a}</div>`).join('');
+                html += `<div class="bg-slate-950/50 p-3 rounded-lg border border-slate-800 space-y-2"><strong class="text-indigo-400 block mb-2 text-xs">الأنشطة المنفذة</strong><div class="grid gap-2">${acts}</div></div>`;
+            }
+
+            addSection("أماكن العمل أو الزيارات", log.locations);
+            addSection("الموضوعات التدريبية", log.topics);
+            addSection("الفئات المستهدفة", log.targets);
+            addSection("عدد المتدربين وأسمائهم", log.trainees);
+            addSection("التعليمات أو المنشورات", log.instructions);
+            addSection("الملاحظات والمعوقات", log.notes);
+            addSection("الإجراءات المتخذة", log.actions);
+            addSection("التوصيات", log.recommendations);
+            addSection("ملخص إنجازات اليوم", log.summary);
+
+            content.innerHTML = html;
+            modal.classList.remove('hidden');
+        }
+
+        // إغلاق النافذة المنبثقة
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('report-modal').classList.add('hidden');
+        });
+
+        // إغلاق النافذة عند الضغط خارجها
+        document.getElementById('report-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('report-modal')) {
+                document.getElementById('report-modal').classList.add('hidden');
+            }
+        });
+
+        // فلترة البحث
         document.getElementById('search-filter').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allLogs.filter(log => 
