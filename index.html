@@ -13,7 +13,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
 
-    <div id="auth-screen" class="flex-grow flex items-center justify-center p-4">
+    <div id="auth-screen" class="hidden flex-grow flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
             <div class="text-center mb-8">
                 <h1 class="text-2xl font-bold text-white mb-2">تسجيل الدخول</h1>
@@ -22,22 +22,25 @@
             <form id="auth-form" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-2">البريد الإلكتروني</label>
-                    <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
+                    <input type="email" id="auth-email" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-2">كلمة المرور</label>
-                    <input type="password" id="auth-password" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
+                    <input type="password" id="auth-password" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 text-white outline-none">
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">دخول</button>
+                <div class="space-y-3 pt-2">
+                    <button type="submit" id="btn-login" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl transition-all shadow-lg">دخول</button>
+                    <button type="button" id="btn-signup" class="w-full bg-transparent border border-slate-700 hover:bg-slate-800 text-slate-300 font-medium py-3 rounded-xl transition-all">إنشاء حساب جديد</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <div id="app-screen" class="hidden flex-grow flex flex-col">
+    <div id="app-screen" class="flex-grow flex flex-col">
         <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 px-4 py-4 shadow-md">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
                 <span class="text-indigo-400 text-lg font-bold">التقرير الميداني اليومي</span>
-                <button id="btn-logout" class="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg text-sm border border-slate-700">خروج</button>
+                <button id="btn-logout" class="hidden bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg text-sm border border-slate-700">خروج</button>
             </div>
         </header>
 
@@ -73,17 +76,81 @@
                     </div>
 
                     <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الأنشطة المنفذة (يمكن اختيار أكثر من نشاط)</h3>
-                        <div class="grid grid-cols-2 gap-3 text-sm" id="activities-group">
-                            <label class="flex items-center gap-2"><input type="checkbox" value="محاضرة نظرية" class="rounded bg-slate-950 border-slate-700"> محاضرة نظرية</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="تدريب عملي" class="rounded bg-slate-950 border-slate-700"> تدريب عملي</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="تدريب على رأس العمل" class="rounded bg-slate-950 border-slate-700"> تدريب على رأس العمل</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="استصحاب قطارات" class="rounded bg-slate-950 border-slate-700"> استصحاب قطارات</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="تفتيش ميداني" class="rounded bg-slate-950 border-slate-700"> تفتيش ميداني</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="زيارة ورش/أحواش" class="rounded bg-slate-950 border-slate-700"> زيارة ورش / أحواش</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="جلسة أونلاين" class="rounded bg-slate-950 border-slate-700"> جلسة أونلاين</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" value="حضور تحقيق" class="rounded bg-slate-950 border-slate-700"> حضور تحقيق</label>
-                            <label class="flex items-center gap-2 col-span-2"><input type="checkbox" value="أخري" class="rounded bg-slate-950 border-slate-700"> أخري</label>
+                        <h3 class="text-lg font-bold text-indigo-400 border-b border-slate-800 pb-2">الأنشطة المنفذة (اختر واكتب التفاصيل)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm" id="activities-group">
+                            
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="محاضرة نظرية" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">محاضرة نظرية</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل المحاضرة هنا...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="تدريب عملي" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">تدريب عملي</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل التدريب هنا...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="تدريب على رأس العمل" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">تدريب على رأس العمل</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب التفاصيل هنا...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="استصحاب قطارات" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">استصحاب قطارات</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="رقم القطار / الرحلة...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="تفتيش ميداني" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">تفتيش ميداني</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="مكان وتفاصيل التفتيش...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="زيارة ورش/أحواش" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">زيارة ورش / أحواش</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اسم الورشة / الحوش...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="جلسة أونلاين" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">جلسة أونلاين</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="موضوع الجلسة والمنصة...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="حضور تحقيق" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">حضور تحقيق</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="تفاصيل التحقيق...">
+                            </div>
+
+                            <div class="flex flex-col gap-2 bg-slate-950/50 p-2 rounded-lg border border-transparent hover:border-slate-800 transition-all sm:col-span-2">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" value="أخري" class="activity-checkbox rounded bg-slate-900 border-slate-700 w-4 h-4"> 
+                                    <span class="font-medium text-slate-300">أخري</span>
+                                </label>
+                                <input type="text" class="activity-input hidden w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-xs text-white outline-none focus:border-indigo-500" placeholder="اكتب تفاصيل الأنشطة الأخرى هنا...">
+                            </div>
+
                         </div>
                     </div>
 
@@ -120,18 +187,17 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ⚠️ ضع مفاتيح Firebase الخاصة بك هنا بدلاً من الكلمات الإنجليزية
+        // ⚠️ ضع مفاتيح Firebase الخاصة بك هنا
         const firebaseConfig = {
             apiKey: "AIzaSyDqOMOxCyTBRouVjAN-70FNaJjTElqeJdE",
     authDomain: "gharably-aad60.firebaseapp.com",
     projectId: "gharably-aad60",
     storageBucket: "gharably-aad60.firebasestorage.app",
     messagingSenderId: "715813598117",
-    appId: "1:715813598117:web:d7a3eea856f20ec4a2ee4c",
-
+    appId: "1:715813598117:web:d7a3eea856f20ec4a2ee4c"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -139,6 +205,21 @@
         const db = getFirestore(app);
 
         let allLogs = [];
+
+        // إظهار وإخفاء مربع النص عند اختيار النشاط
+        document.querySelectorAll('.activity-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const parentDiv = e.target.closest('div');
+                const inputField = parentDiv.querySelector('.activity-input');
+                if (e.target.checked) {
+                    inputField.classList.remove('hidden');
+                    inputField.focus();
+                } else {
+                    inputField.classList.add('hidden');
+                    inputField.value = ''; // تفريغ الحقل إذا تم إزالة علامة الصح
+                }
+            });
+        });
 
         // التنقل بين الشاشات
         function showView(view) {
@@ -152,7 +233,10 @@
         document.getElementById('tab-form').addEventListener('click', () => showView('form'));
         document.getElementById('tab-dashboard').addEventListener('click', () => showView('dashboard'));
 
-        // المصادقة
+        // ==========================================
+        // ⚠️ تم إيقاف نظام الدخول مؤقتاً (Hold)
+        // ==========================================
+        /*
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('auth-screen').classList.add('hidden');
@@ -163,12 +247,40 @@
                 document.getElementById('app-screen').classList.add('hidden');
             }
         });
+        */
+        
+        // تشغيل واجهة الإدخال مباشرة متخطياً تسجيل الدخول
+        showView('form');
 
+        // الدخول (مجمد)
         document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
+                const btn = document.getElementById('btn-login');
+                btn.innerText = "جاري الدخول...";
                 await signInWithEmailAndPassword(auth, document.getElementById('auth-email').value, document.getElementById('auth-password').value);
-            } catch (error) { alert("خطأ في الدخول: " + error.message); }
+                btn.innerText = "دخول";
+            } catch (error) { 
+                alert("خطأ في الدخول: " + error.message);
+                document.getElementById('btn-login').innerText = "دخول";
+            }
+        });
+
+        // إنشاء حساب (مجمد)
+        document.getElementById('btn-signup').addEventListener('click', async () => {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            if(!email || !password) { alert("يرجى كتابة البريد وكلمة المرور أولاً"); return; }
+            try {
+                const btn = document.getElementById('btn-signup');
+                btn.innerText = "جاري الإنشاء...";
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("تم إنشاء الحساب وتسجيل الدخول بنجاح!");
+                btn.innerText = "إنشاء حساب جديد";
+            } catch (error) {
+                alert("خطأ في إنشاء الحساب: " + error.message);
+                document.getElementById('btn-signup').innerText = "إنشاء حساب جديد";
+            }
         });
 
         document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
@@ -177,9 +289,17 @@
         document.getElementById('daily-data-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // تجميع الأنشطة المختارة
-            const checkboxes = document.querySelectorAll('#activities-group input[type="checkbox"]:checked');
-            let selectedActivities = Array.from(checkboxes).map(cb => cb.value);
+            // تجميع الأنشطة المختارة مع تفاصيلها النصية
+            const selectedActivities = [];
+            document.querySelectorAll('.activity-checkbox:checked').forEach(cb => {
+                const parentDiv = cb.closest('div');
+                const textInput = parentDiv.querySelector('.activity-input');
+                let activityText = cb.value;
+                if (textInput && textInput.value.trim() !== '') {
+                    activityText += ` (${textInput.value.trim()})`; // دمج النشاط مع التفاصيل
+                }
+                selectedActivities.push(activityText);
+            });
 
             const reportData = {
                 trainerName: document.getElementById('f-name').value,
@@ -200,7 +320,8 @@
                 actions: document.getElementById('f-actions').value,
                 recommendations: document.getElementById('f-recommendations').value,
                 summary: document.getElementById('f-summary').value,
-                submitterEmail: auth.currentUser.email,
+                // تعديل لتفادي مشكلة عدم وجود مستخدم مسجل
+                submitterEmail: auth.currentUser ? auth.currentUser.email : "مستخدم مؤقت (بدون تسجيل)",
                 timestamp: new Date().toISOString()
             };
             
@@ -210,9 +331,13 @@
                 await addDoc(collection(db, "daily_reports"), reportData);
                 alert("تم رفع التقرير بنجاح!");
                 e.target.reset();
+                // إعادة إخفاء كل مربعات نص الأنشطة بعد التفريغ
+                document.querySelectorAll('.activity-input').forEach(input => input.classList.add('hidden'));
                 btn.innerText = "إرسال التقرير النهائي"; btn.disabled = false;
             } catch (error) {
                 alert("خطأ: " + error.message);
+                e.target.querySelector('button[type="submit"]').innerText = "إرسال التقرير النهائي";
+                e.target.querySelector('button[type="submit"]').disabled = false;
             }
         });
 
@@ -233,11 +358,15 @@
 
         function renderLogs(logs) {
             const container = document.getElementById('logs-container');
-            if(logs.length === 0) { container.innerHTML = `<p class="text-center text-slate-500 py-10">لا يوجد تقارير بعد.</p>`; return; }
+            if(logs.length === 0) { container.innerHTML = `<p class="text-center text-slate-500 py-10">لا توجد تقارير حتى الآن.</p>`; return; }
             
             container.innerHTML = "";
             logs.forEach(log => {
-                const acts = log.activities && log.activities.length > 0 ? log.activities.join('، ') : 'لم يتم تحديد أنشطة';
+                // عرض الأنشطة المختارة بطريقة منظمة
+                const acts = log.activities && log.activities.length > 0 
+                    ? log.activities.map(a => `<span class="block bg-slate-800 text-slate-300 px-2 py-1 rounded mt-1 text-xs border border-slate-700">${a}</span>`).join('') 
+                    : '<span class="text-slate-500 text-xs">لم يتم تحديد أنشطة</span>';
+                
                 const card = document.createElement('div');
                 card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3";
                 card.innerHTML = `
@@ -249,8 +378,8 @@
                         <span class="text-xs bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">${log.reportDate}</span>
                     </div>
                     <div class="text-sm text-slate-300 space-y-2 pt-2">
-                        <p><strong class="text-indigo-400">الأنشطة:</strong> ${acts}</p>
-                        <p><strong class="text-indigo-400">الموضوعات:</strong> ${log.topics || '-'}</p>
+                        <div><strong class="text-indigo-400 block mb-1">الأنشطة المنفذة:</strong> ${acts}</div>
+                        <p class="pt-2"><strong class="text-indigo-400">الموضوعات:</strong> ${log.topics || '-'}</p>
                         <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 mt-3">
                             <strong class="text-xs text-slate-500 block mb-1">ملخص الإنجاز:</strong>
                             <p class="whitespace-pre-line leading-relaxed">${log.summary}</p>
